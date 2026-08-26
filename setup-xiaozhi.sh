@@ -46,11 +46,17 @@ if [ "$(uname)" != "Darwin" ]; then
     exit 1
 fi
 
-if ! command -v python3 >/dev/null 2>&1; then
-    echo -e "${RED}Python 3 not found. Install Python 3.10+ first.${NC}"
+echo -e "  Installing Python 3.11 via Homebrew..."
+brew install python@3.11 2>/dev/null || true
+PYTHON311="/opt/homebrew/bin/python3.11"
+if [ ! -f "$PYTHON311" ]; then
+    PYTHON311="$(brew --prefix python@3.11)/bin/python3.11"
+fi
+if [ ! -f "$PYTHON311" ]; then
+    echo -e "${RED}Python 3.11 install failed.${NC}"
     exit 1
 fi
-echo -e "  Python: $(python3 --version)"
+echo -e "  Python 3.11: $($PYTHON311 --version)"
 
 if ! command -v brew >/dev/null 2>&1; then
     echo -e "${YELLOW}  Installing Homebrew...${NC}"
@@ -143,7 +149,7 @@ echo -e "${BLUE}[5/8] Setting up xiaozhi-esp32-server...${NC}"
 cd "$SERVER_DIR/main/xiaozhi-server"
 
 if [ ! -d ".venv" ]; then
-    python3 -m venv .venv
+    $PYTHON311 -m venv .venv
 fi
 
 source .venv/bin/activate
@@ -255,7 +261,7 @@ echo -e "${BLUE}[6/8] Setting up py-xiaozhi client...${NC}"
 cd "$CLIENT_DIR"
 
 if [ ! -d ".venv" ]; then
-    python3 -m venv .venv
+    $PYTHON311 -m venv .venv
 fi
 
 source .venv/bin/activate
