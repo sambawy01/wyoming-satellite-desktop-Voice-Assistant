@@ -154,6 +154,9 @@ fi
 
 source .venv/bin/activate
 pip install --upgrade pip
+# Patch requirements: vosk has no macOS wheel, we use SherpaASR instead
+sed -i '' 's/^vosk==0.3.45/#vosk==0.3.45 (not available on macOS)/' requirements.txt
+# Relax sherpa_onnx pin slightly if needed (0.3.45 -> 0.3.44 fallback)
 echo -e "  Installing server dependencies, please wait..."
 pip install -r requirements.txt
 
