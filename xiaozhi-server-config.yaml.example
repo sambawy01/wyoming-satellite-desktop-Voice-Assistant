@@ -1,0 +1,104 @@
+# Xiaozhi Server - Configuration for Mac Mini (standalone, no Home Assistant)
+# This file overrides defaults from config.yaml
+# Only put what you want to change here
+
+server:
+  ip: 0.0.0.0
+  port: 8000
+  http_port: 8003
+  # These will be auto-detected by the server on startup.
+  # If auto-detection is wrong, replace __LOCAL_IP__ with your Mac Mini's LAN IP
+  websocket: ws://127.0.0.1:8000/xiaozhi/v1/
+  vision_explain: http://127.0.0.1:8003/mcp/vision/explain
+  timezone_offset: +2
+  auth:
+    enabled: false
+
+log:
+  log_level: INFO
+
+# Close connection after 3 minutes of silence
+close_connection_no_voice_time: 180
+
+# English wake words (must match what the client listens for)
+wakeup_words:
+  - "hey xiaozhi"
+  - "hello xiaozhi"
+  - "hi xiaozhi"
+  - "hey jarvis"
+  - "hello jarvis"
+
+# System prompt - customize this to change the AI personality
+prompt: |
+  You are Xiaozhi, a helpful home AI assistant running on a Mac Mini.
+  You are friendly, concise, and proactive. You can answer questions,
+  control smart home devices, search the web, play music, and more.
+  Keep responses short and natural for voice interaction (max 2-3 sentences).
+  When the user asks you to do something, try your best to execute it.
+  If you are not sure about something, ask for clarification.
+
+system_error_response: "Sorry, I had a problem. Can you try again?"
+
+exit_commands:
+  - "exit"
+  - "quit"
+  - "goodbye"
+  - "bye"
+
+# Module selection - all local/free components
+selected_module:
+  VAD: SileroVAD
+  ASR: SherpaASR
+  LLM: OllamaLLM
+  TTS: EdgeTTS
+  VLLM: OllamaLLM
+  Memory: mem_local_short
+  Intent: function_call
+
+# Memory - local short-term using Ollama
+Memory:
+  mem_local_short:
+    type: mem_local_short
+    llm: OllamaLLM
+
+# ASR - Sherpa-ONNX local (auto-downloads model on first run via modelscope)
+ASR:
+  SherpaASR:
+    type: sherpa_onnx_local
+    model_dir: models/sherpa-onnx-sense-voice-zh-en-ja-ko-yue-2024-07-17
+    output_dir: tmp/
+    model_type: sense_voice
+
+# VAD - Silero (local, free, model included in repo)
+VAD:
+  SileroVAD:
+    type: silero
+    threshold: 0.5
+    threshold_low: 0.3
+    model_dir: models/snakers4_silero-vad
+    min_silence_duration_ms: 200
+
+# LLM - Ollama (local, free)
+# Make sure you have Ollama installed and qwen2.5 model pulled
+LLM:
+  OllamaLLM:
+    type: ollama
+    model_name: qwen2.5
+    base_url: http://127.0.0.1:11434
+
+# TTS - Edge TTS (free Microsoft cloud, good quality English voices)
+TTS:
+  EdgeTTS:
+    type: edge
+    voice: en-US-AriaNeural
+    output_dir: tmp/
+
+# Intent - function calling via Ollama
+Intent:
+  function_call:
+    type: function_call
+    functions:
+      - get_weather
+      - get_news_from_newsnow
+      - play_music
+      - web_search
