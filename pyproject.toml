@@ -46,6 +46,7 @@ dev = [
 
 [project.scripts]
 wyoming-satellite = "wyoming_satellite:__main__.run"
+wyoming-satellite-desktop = "wyoming_satellite.desktop.__main__:run"
 
 [project.urls]
 "Source Code" = "http://github.com/rhasspy/wyoming-satellite"

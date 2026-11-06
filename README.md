@@ -7,6 +7,7 @@ Remote voice satellite using the [Wyoming protocol](https://github.com/rhasspy/w
 ## Features
 
 - Works with [Home Assistant](https://www.home-assistant.io/integrations/wyoming)
+- Runs as a **desktop voice assistant** on Linux, macOS or Windows, using the computer's own microphone and speakers (PipeWire, PulseAudio, ALSA, CoreAudio, DirectShow) - see [tutorial_desktop.md](docs/tutorial_desktop.md)
 - Local wake word detection using [Wyoming services](https://github.com/rhasspy/wyoming#wyoming-projects) like for example openwakeword.
 - Audio enhancements using [webrtc](https://github.com/rhasspy/webrtc-noise-gain/)
 - Voice activity detection using [pysilero-vad]
@@ -25,7 +26,19 @@ You can use for example the Raspberry Pi Zero 2W with the Respeaker Lite or the 
 
 For more specific information about what hardware, you can look here: [piCompose: hardware.md](https://github.com/florian-asche/PiCompose/blob/main/docs/hardware.md)
 
+No dedicated hardware is required if you just want to run this on a computer you already have: see [tutorial_desktop.md](docs/tutorial_desktop.md).
+
 ### Software
+
+#### Run it on a desktop (no special hardware):
+
+See [tutorial_desktop.md](docs/tutorial_desktop.md)
+
+```sh
+python3 script/setup --vad --noisegain
+script/run_desktop --list-backends
+script/run_desktop --wake-uri tcp://127.0.0.1:10400 --wake-word-name ok_nabu
+```
 
 #### Use a prebuild Raspberry Pi Image with Docker:
 

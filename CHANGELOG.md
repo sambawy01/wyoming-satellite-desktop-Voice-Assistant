@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+- Add desktop support (`wyoming_satellite.desktop`, `script/run_desktop`)
+  - Auto-detects the host sound server and generates the matching
+    `--mic-command`/`--snd-command`: PipeWire, PulseAudio/pipewire-pulse,
+    ALSA, SoX, macOS avfoundation and Windows DirectShow
+  - `--list-backends`, `--list-devices` and `--print-command` for inspection
+  - `--install-service` writes a user-level systemd unit or macOS LaunchAgent
+    (not a system unit, which cannot reach the user's audio socket)
+  - New console script `wyoming-satellite-desktop`
+  - See `docs/tutorial_desktop.md`
+
 ## 1.4.1
 
 - Send `played` event to server
